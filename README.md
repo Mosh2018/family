@@ -13,3 +13,9 @@ docker-compose run app sh -c "python manage.py makemigrations"
 
 ## Running tests and lints before committing
 docker-compose run app sh -c "python manage.py test && flake8"
+
+## Creating superuser
+docker-compose run app sh -c "python manage.py createsuperuser"
+
+##Swagger
+https://django-rest-swagger.readthedocs.io/en/latest/
