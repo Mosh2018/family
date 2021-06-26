@@ -1,38 +1,28 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.urls import reverse
-
-from rest_framework.test import APIClient
 from rest_framework import status
 
-CREATE_USER_URL = reverse('user:create')
-
-payload = {
-    'email': 'mohamid@gamial.com',
-    'username': 'Mohamid',
-    'password': '1234pass'
-}
+from app.user.tests.abstarct_test import AbstractTest
+from app.user.tests.abstarct_test import payload, create_user
+from app.user.tests.abstarct_test import CREATE_USER_URL
 
 
-def create_user(**param):
-    return get_user_model().objects.create_user(**param)
-
-
-class PublicUserApiTests(TestCase):
+class PublicUserApiTests(AbstractTest):
     """Test the users API"""
-
-    def setUp(self):
-        self.client = APIClient()
 
     def test_create_user_success(self):
         """Test user with valid payload is success"""
+        payload2 = {
+            'email': 'mohamid2@gamial.com',
+            'username': 'Mohamid2',
+            'password': '1234pass'
+        }
 
-        res = self.client.post(CREATE_USER_URL, payload)
+        res = self.client.post(CREATE_USER_URL, payload2)
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         user = get_user_model().objects.get(**res.data)
-        self.assertTrue(user.check_password(payload['password']))
+        self.assertTrue(user.check_password(payload2['password']))
         self.assertNotIn('password', res.data)
 
     def test_user_exists(self):
