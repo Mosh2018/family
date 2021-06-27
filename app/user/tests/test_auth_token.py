@@ -1,6 +1,6 @@
 from rest_framework import status
 
-from app.user.tests.abstarct_test import AbstractTest
+from app.user.tests.abstarct_test import AbstractTest, ME_URL
 from app.user.tests.abstarct_test import payload, create_user
 from app.user.tests.abstarct_test import TOKEN_URL
 
@@ -38,3 +38,9 @@ class AuthTokenTest(AbstractTest):
 
         self.assertNotIn('token', response.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_retrieve_user_unauthorized(self):
+        """Test that authentication required for users"""
+        response = self.client.get(ME_URL)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
